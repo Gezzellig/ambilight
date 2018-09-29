@@ -83,6 +83,6 @@ def main_loop():
 	# When everything done, release the capture
 	cap.release()
 
-
+main_loop()
 
 #cv2.destroyAllWindows()

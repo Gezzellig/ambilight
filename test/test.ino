@@ -22,7 +22,7 @@ CRGB leds[NUM_LEDS];
  
 void setup() {
 
-       FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
+       FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RBG>(leds, NUM_LEDS);
      
         // initial RGB flash
         LEDS.showColor(CRGB(5, 0, 0));
