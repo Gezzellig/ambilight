@@ -15,7 +15,6 @@ def concat_led_colors(led_colors):
 def send_colors(arduino, colors):
     concat_colors = concat_led_colors(colors)
     byte_colors = concat_colors.astype(np.uint8)
-    print(byte_colors)
     arduino.write(byte_colors)
     arduino.flush()
 
@@ -39,7 +38,7 @@ def connect_Arduino():
 num_leds = 5
 arduino = connect_Arduino()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2) # 0 for webcam, 2 for usb video
 frame_heigth = int(cap.get(4))
 frame_width = int(cap.get(3))
 
@@ -52,6 +51,7 @@ def show_one_color_in_frame(color):
     bgr_color_frame = np.tile(bgr_color, (240, 320, 1))
     # print(np.repeat(color, 20))
     cv2.imshow('result color', bgr_color_frame)
+
 
 
 while (True):
@@ -68,7 +68,8 @@ while (True):
     #BGR to RGB
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    color = frame[10][10]
+    color = frame[int(frame_heigth/2)][int(frame_width/2)]
+    print(color)
     show_one_color_in_frame(color)
 
     colors = [color, color, color, color, color]
