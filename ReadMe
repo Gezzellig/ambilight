@@ -1,0 +1,4 @@
+Arduino
+	install library FastLed: Sketch/Include_library/Manage_Libraries search for fastled
+	set Tools/Board to "Arduino Nano"
+	set Tools/Port to appropriate port
