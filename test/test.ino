@@ -31,7 +31,7 @@ void setup() {
         delay(500);
         LEDS.showColor(CRGB(0, 0, 5));
         delay(500);
-        LEDS.showColor(CRGB(0, 0, 0));
+        LEDS.showC Inolor(CRGB(0, 0, 0));
        
         Serial.begin(serialRate); 
 }
