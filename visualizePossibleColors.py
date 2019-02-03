@@ -4,17 +4,35 @@ import numpy as np
 import calibrateColor
 import settings
 
-def nothing(a):
-    pass
+
+def update_result_color_frame_name(ignore):
+    print("update")
+    r_factor = cv2.getTrackbarPos(r_name, result_color_frame_name) / 100.0
+    g_factor = cv2.getTrackbarPos(g_name, result_color_frame_name) / 100.0
+    b_factor = cv2.getTrackbarPos(b_name, result_color_frame_name) / 100.0
+    result_color_rgb = [int(a * b) for a, b in zip(selected_color, [r_factor, g_factor, b_factor])]
+
+    calibrateColor.show_one_color_in_frame(result_color_frame_name, result_color_rgb)
+
 
 def select_color_callback(event, x, y, flags, param):
+    global buttonDown
     if event == cv2.EVENT_LBUTTONDOWN:
-        print (x, y)
-        b, g, r = image[y][x]
-        global selected_color
-        selected_color = [r, g, b]
-        calibrateColor.show_one_color_in_frame(selected_color_frame_name, selected_color)
+        print("down")
+        buttonDown = True
+    if event == cv2.EVENT_LBUTTONUP:
+        print("up")
+        buttonDown = False
+    if event == cv2.EVENT_MOUSEMOVE:
+        if buttonDown:
+            b, g, r = image[y][x]
+            global selected_color
+            selected_color = [r, g, b]
+            calibrateColor.show_one_color_in_frame(selected_color_frame_name, selected_color)
+            update_result_color_frame_name(None)
 
+
+buttonDown = False
 
 color_block_width = 10
 color_block_height = 40
@@ -48,9 +66,9 @@ r_name = "R scale percent"
 g_name = "G scale percent"
 b_name = "B scale percent"
 
-cv2.createTrackbar(r_name, result_color_frame_name, 100, 100, nothing)
-cv2.createTrackbar(g_name, result_color_frame_name, 100, 100, nothing)
-cv2.createTrackbar(b_name, result_color_frame_name, 100, 100, nothing)
+cv2.createTrackbar(r_name, result_color_frame_name, 100, 100, update_result_color_frame_name)
+cv2.createTrackbar(g_name, result_color_frame_name, 100, 100, update_result_color_frame_name)
+cv2.createTrackbar(b_name, result_color_frame_name, 100, 100, update_result_color_frame_name)
 
 for h_index in range(hue_num_buckets):
     for s_index in range(saturation_num_buckets):
@@ -65,17 +83,15 @@ for h_index in range(hue_num_buckets):
 
 cv2.imshow(frame_name, image)
 
+# Connect with arduino
+#arduino = calibrateColor.connect_Arduino()
+
 while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    print(selected_color)
-    r_factor = cv2.getTrackbarPos(r_name, result_color_frame_name) / 100.0
-    g_factor = cv2.getTrackbarPos(g_name, result_color_frame_name) / 100.0
-    b_factor = cv2.getTrackbarPos(b_name, result_color_frame_name) / 100.0
-    result_color_rgb = [int(a * b) for a, b in zip(selected_color, [r_factor, g_factor, b_factor])]
 
-    calibrateColor.show_one_color_in_frame(result_color_frame_name, result_color_rgb)
-    #Add here the sending color code to arduino
+    # Send colors to arduino
+    # colors = [result_color_rgb, result_color_rgb, result_color_rgb, result_color_rgb, result_color_rgb]
+    # send_colors(arduino, colors)
 
-cv2.waitKey(0)
 cv2.destroyAllWindows()

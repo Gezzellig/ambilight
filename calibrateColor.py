@@ -102,7 +102,6 @@ def nothing(x):
 
 
 def main():
-    num_leds = 5
     # UNCOMMENT
     # arduino = connect_Arduino()
 
@@ -150,7 +149,6 @@ def main():
         corrected_color_rgb = [int(a * b) for a, b in zip(dominant_color_rgb, [r_factor, g_factor, b_factor])]
 
         show_one_color_in_frame(corrected_color_frame_name, corrected_color_rgb)
-        # create trackbars for color change
 
         # colors = [color, color, color, color, color]
         # UNCOMMENT
