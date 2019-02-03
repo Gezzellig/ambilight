@@ -6,7 +6,6 @@ import settings
 
 
 def update_result_color_frame_name(ignore):
-    print("update")
     r_factor = cv2.getTrackbarPos(r_name, result_color_frame_name) / 100.0
     g_factor = cv2.getTrackbarPos(g_name, result_color_frame_name) / 100.0
     b_factor = cv2.getTrackbarPos(b_name, result_color_frame_name) / 100.0
@@ -18,18 +17,15 @@ def update_result_color_frame_name(ignore):
 def select_color_callback(event, x, y, flags, param):
     global buttonDown
     if event == cv2.EVENT_LBUTTONDOWN:
-        print("down")
         buttonDown = True
     if event == cv2.EVENT_LBUTTONUP:
-        print("up")
         buttonDown = False
-    if event == cv2.EVENT_MOUSEMOVE:
-        if buttonDown:
-            b, g, r = image[y][x]
-            global selected_color
-            selected_color = [r, g, b]
-            calibrateColor.show_one_color_in_frame(selected_color_frame_name, selected_color)
-            update_result_color_frame_name(None)
+    if buttonDown:
+        b, g, r = image[y][x]
+        global selected_color
+        selected_color = [r, g, b]
+        calibrateColor.show_one_color_in_frame(selected_color_frame_name, selected_color)
+        update_result_color_frame_name(None)
 
 
 buttonDown = False
